@@ -1,0 +1,9 @@
+'use client';
+import {useState} from 'react';
+import {browserClient} from '../../lib/supabase/browser';
+export default function LoginForm(){
+ const [channel,setChannel]=useState<'email'|'sms'>('email');const [contact,setContact]=useState('');const [code,setCode]=useState('');const [step,setStep]=useState(0);const [message,setMessage]=useState('');const [busy,setBusy]=useState(false);
+ async function request(){setBusy(true);setMessage('');const s=browserClient();const res=channel==='email'?await s.auth.signInWithOtp({email:contact.trim().toLowerCase(),options:{shouldCreateUser:false}}):await s.auth.signInWithOtp({phone:contact.trim(),options:{shouldCreateUser:false}});setBusy(false);if(res.error)setMessage(res.error.message);else{setStep(1);setMessage('Код отправлен. Для email настройте шаблон Supabase на отображение {{ .Token }}.')}}
+ async function verify(){setBusy(true);const s=browserClient();const data=channel==='email'?{email:contact.trim().toLowerCase(),token:code,type:'email' as const}:{phone:contact.trim(),token:code,type:'sms' as const};const {error}=await s.auth.verifyOtp(data);setBusy(false);if(error)setMessage(error.message);else window.location.href='/employee';}
+ return <div style={{maxWidth:420}}><label>Способ входа</label><select value={channel} onChange={e=>{setChannel(e.target.value as 'email'|'sms');setStep(0)}}><option value="email">Email</option><option value="sms">SMS</option></select><label>{channel==='email'?'Email':'Номер телефона (+46...)'}</label><input value={contact} onChange={e=>setContact(e.target.value)} placeholder={channel==='email'?'name@example.com':'+46701234567'}/>{step===1&&<><label>Одноразовый код</label><input value={code} onChange={e=>setCode(e.target.value)} inputMode="numeric"/></>}<button disabled={busy||!contact||step===1&&!code} onClick={step===0?request:verify}>{step===0?'Получить код':'Подтвердить и войти'}</button><p className="error">{message}</p></div>
+}

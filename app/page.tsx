@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function Home(){return <section className="panel"><h1>StandEL Time</h1><p>Учёт рабочих часов, смен и объектов StandEL AB.</p><div className="navbuttons"><Link href="/login">Войти</Link><Link href="/join">Активировать приглашение</Link></div><p className="muted">Регистрация без приглашения закрыта. Административная панель не доступна через меню сотрудников.</p></section>}
