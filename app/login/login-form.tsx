@@ -1,9 +1,25 @@
 'use client';
 import {useState} from 'react';
 import {browserClient} from '../../lib/supabase/browser';
+type Mode='login'|'activate'|'reset';
 export default function LoginForm(){
- const [channel,setChannel]=useState<'email'|'sms'>('email');const [contact,setContact]=useState('');const [code,setCode]=useState('');const [step,setStep]=useState(0);const [message,setMessage]=useState('');const [busy,setBusy]=useState(false);
- async function request(){setBusy(true);setMessage('');const s=browserClient();const res=channel==='email'?await s.auth.signInWithOtp({email:contact.trim().toLowerCase(),options:{shouldCreateUser:false}}):await s.auth.signInWithOtp({phone:contact.trim(),options:{shouldCreateUser:false}});setBusy(false);if(res.error)setMessage(res.error.message);else{setStep(1);setMessage('Код отправлен. Для email настройте шаблон Supabase на отображение {{ .Token }}.')}}
- async function verify(){setBusy(true);const s=browserClient();const data=channel==='email'?{email:contact.trim().toLowerCase(),token:code,type:'email' as const}:{phone:contact.trim(),token:code,type:'sms' as const};const {error}=await s.auth.verifyOtp(data);setBusy(false);if(error)setMessage(error.message);else window.location.href='/employee';}
- return <div style={{maxWidth:420}}><label>Способ входа</label><select value={channel} onChange={e=>{setChannel(e.target.value as 'email'|'sms');setStep(0)}}><option value="email">Email</option><option value="sms">SMS</option></select><label>{channel==='email'?'Email':'Номер телефона (+46...)'}</label><input value={contact} onChange={e=>setContact(e.target.value)} placeholder={channel==='email'?'name@example.com':'+46701234567'}/>{step===1&&<><label>Одноразовый код</label><input value={code} onChange={e=>setCode(e.target.value)} inputMode="numeric"/></>}<button disabled={busy||!contact||step===1&&!code} onClick={step===0?request:verify}>{step===0?'Получить код':'Подтвердить и войти'}</button><p className="error">{message}</p></div>
+ const [mode,setMode]=useState<Mode>('login');
+ const [email,setEmail]=useState('');const [password,setPassword]=useState('');
+ const [confirm,setConfirm]=useState('');const [code,setCode]=useState('');
+ const [stage,setStage]=useState(0);const [message,setMessage]=useState('');const [busy,setBusy]=useState(false);
+ const choose=(m:Mode)=>{setMode(m);setStage(0);setCode('');setPassword('');setConfirm('');setMessage('')};
+ async function login(){setBusy(true);setMessage('');const {error}=await browserClient().auth.signInWithPassword({email:email.trim().toLowerCase(),password});setBusy(false);if(error)setMessage('Не удалось войти. Проверьте email и пароль.');else window.location.href='/employee'}
+ async function requestCode(){setBusy(true);setMessage('');const {error}=await browserClient().auth.signInWithOtp({email:email.trim().toLowerCase(),options:{shouldCreateUser:false}});setBusy(false);if(error)setMessage(error.message);else{setStage(1);setMessage('Код подтверждения отправлен на email.')}}
+ async function verify(){setBusy(true);setMessage('');const {error}=await browserClient().auth.verifyOtp({email:email.trim().toLowerCase(),token:code.trim(),type:'email'});setBusy(false);if(error)setMessage(error.message);else{setStage(2);setMessage('Email подтверждён. Придумайте новый пароль.')}}
+ async function setNewPassword(){if(password.length<12||password!==confirm){setMessage('Пароль должен содержать не менее 12 символов, оба поля должны совпадать.');return}
+ setBusy(true);setMessage('');const supabase=browserClient();const {error}=await supabase.auth.updateUser({password});setBusy(false);if(error)setMessage(error.message);else window.location.href='/employee'}
+ return <div style={{maxWidth:440}}>
+ <div className="navbuttons"><button className={mode==='login'?'':'secondary'} onClick={()=>choose('login')}>Вход</button><button className={mode==='activate'?'':'secondary'} onClick={()=>choose('activate')}>Установить пароль</button><button className={mode==='reset'?'':'secondary'} onClick={()=>choose('reset')}>Забыли пароль?</button></div>
+ <label>Email</label><input autoComplete="email" type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="employee@standel.se"/>
+ {mode==='login'?<><label>Пароль</label><input type="password" autoComplete="current-password" value={password} onChange={e=>setPassword(e.target.value)}/><button disabled={busy||!email||!password} onClick={login}>Войти</button></>:
+ <>{stage===0&&<><p className="muted">Одноразовый код нужен только при первой установке или восстановлении пароля.</p><button disabled={busy||!email} onClick={requestCode}>Отправить код на email</button></>}
+ {stage===1&&<><label>Одноразовый код</label><input autoComplete="one-time-code" value={code} inputMode="numeric" onChange={e=>setCode(e.target.value)}/><button disabled={busy||!code} onClick={verify}>Подтвердить код</button></>}
+ {stage===2&&<><label>Новый пароль (от 12 символов)</label><input type="password" autoComplete="new-password" value={password} onChange={e=>setPassword(e.target.value)}/><label>Повторить пароль</label><input type="password" autoComplete="new-password" value={confirm} onChange={e=>setConfirm(e.target.value)}/><button disabled={busy||!password||!confirm} onClick={setNewPassword}>Сохранить пароль</button></>}</>}
+ {message&&<p role="status" className="muted">{message}</p>}
+ </div>
 }
