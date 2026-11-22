@@ -49,3 +49,11 @@ header,main{position:relative;z-index:1}
 .swedish-calendar .calday:hover{background:#dceafa}
 .swedish-calendar .calday.selected{border:2px solid #2066bb;background:#cde3ff}
 @media(max-width:650px){.calendargrid.swedish-calendar{grid-template-columns:minmax(29px,.6fr) repeat(7,minmax(0,1fr))}.calendar-week-heading{font-size:10px;padding:7px 1px}.calendar-week-number{font-size:10px}.calendar-day-slot,.calendar-day-outside{min-height:49px}.swedish-calendar .calday{min-height:49px;padding:4px 2px}.swedish-calendar .calday small{font-size:9px;overflow-wrap:anywhere}}
+
+/* v0.26: employee weekly and project summaries */
+.standel-week-summary{margin:15px 0 20px;padding:16px;border:1px solid #ccdaea;border-radius:12px;background:rgba(246,250,255,.96)}
+.standel-week-summary h3{margin:0 0 10px}
+.standel-week-summary h3:not(:first-child){margin-top:18px}
+.standel-week-summary .table-scroll{overflow-x:auto;margin-bottom:12px}
+.standel-week-summary table{width:100%;min-width:430px}
+@media(max-width:650px){.standel-week-summary{padding:10px}.standel-week-summary button{width:100%}}
