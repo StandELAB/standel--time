@@ -37,3 +37,15 @@ header nav{align-items:center}header nav a{white-space:nowrap}
 /* Keep technical motif behind app content without hiding it under body background */
 body::before{z-index:0}
 header,main{position:relative;z-index:1}
+
+/* v0.23: Swedish Monday-first calendar, ISO 8601 week numbers (vecka) */
+.calendargrid.swedish-calendar{display:grid;grid-template-columns:minmax(38px,.56fr) repeat(7,minmax(0,1fr));gap:0;margin:15px 0;border:1px solid #d2e1ef;border-radius:10px;overflow:hidden;background:#fff}
+.calendar-week-heading{background:#dceaf9;color:#214768;font-size:12px;font-weight:700;text-align:center;padding:9px 2px;border-bottom:1px solid #c2d8ee}
+.calendar-week-row{display:contents}
+.calendar-week-number{display:flex;justify-content:center;align-items:center;background:#e8f1fb;border-right:1px solid #cfdded;border-bottom:1px solid #dbe5f0;color:#28547b;font-size:12px;font-weight:700}
+.calendar-day-slot,.calendar-day-outside{min-width:0;min-height:63px;border-bottom:1px solid #e4edf5;border-left:1px solid #edf2f7}
+.calendar-day-outside{background:#f6f8fb;color:#a0b2c2;font-size:12px;padding:7px}
+.swedish-calendar .calday{display:block;width:100%;height:100%;min-height:63px;margin:0;border:0;border-radius:0;padding:8px;background:#eff5fc}
+.swedish-calendar .calday:hover{background:#dceafa}
+.swedish-calendar .calday.selected{border:2px solid #2066bb;background:#cde3ff}
+@media(max-width:650px){.calendargrid.swedish-calendar{grid-template-columns:minmax(29px,.6fr) repeat(7,minmax(0,1fr))}.calendar-week-heading{font-size:10px;padding:7px 1px}.calendar-week-number{font-size:10px}.calendar-day-slot,.calendar-day-outside{min-height:49px}.swedish-calendar .calday{min-height:49px;padding:4px 2px}.swedish-calendar .calday small{font-size:9px;overflow-wrap:anywhere}}
