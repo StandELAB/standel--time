@@ -5,7 +5,7 @@ export default async function Admin(){
  const {db,member,user}=await requireMember('admin');
  const [staff,sites,entries,absences,shifts,certs,assignments,orders,orderAssignees,materials,diaries,photos,atas,payroll,audit,avatars,features]=await Promise.all([
  db.from('org_members').select('user_id,display_name,role,status,supervisor_id').eq('org_id',member.org_id).order('display_name'),
- db.from('projects').select('id,name,project_code,client_name,color,archived_at').eq('org_id',member.org_id).order('name'),
+ db.from('projects').select('id,name,project_code,client_name,site_address,site_city,color,archived_at').eq('org_id',member.org_id).order('name'),
  db.from('time_entries').select('id,user_id,project_id,work_date,start_minute,end_minute,break_minutes,hours,category,description,work_order_id,deleted_at').eq('org_id',member.org_id).is('deleted_at',null).order('work_date',{ascending:false}).limit(500),
  db.from('absences').select('id,user_id,start_date,end_date,kind,status').eq('org_id',member.org_id).order('start_date',{ascending:false}).limit(200),
  db.from('shifts').select('id,user_id,project_id,work_date,start_minute,end_minute').eq('org_id',member.org_id).order('work_date',{ascending:false}).limit(100),
