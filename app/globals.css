@@ -57,3 +57,11 @@ header,main{position:relative;z-index:1}
 .standel-week-summary .table-scroll{overflow-x:auto;margin-bottom:12px}
 .standel-week-summary table{width:100%;min-width:430px}
 @media(max-width:650px){.standel-week-summary{padding:10px}.standel-week-summary button{width:100%}}
+
+/* v0.31: admin hours ISO week overview */
+.hours-week-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:15px 0}
+.hours-week-day{min-width:0;display:flex;flex-direction:column;gap:7px;margin:0;padding:12px 5px;background:#edf5ff;color:#173854;border:1px solid #c7daed;border-radius:10px;align-items:center}
+.hours-week-day.selected{border:2px solid #1460bf;background:#cde3ff}
+.hours-week-day span,.hours-week-day small{font-size:12px}
+.hours-day-detail{margin-top:15px;padding:14px;background:#f5f9ff;border:1px solid #d8e5f1;border-radius:10px}
+@media(max-width:650px){.hours-week-grid{gap:3px}.hours-week-day{padding:8px 2px;gap:5px;font-size:12px}.hours-week-day span,.hours-week-day small{font-size:10px}}
