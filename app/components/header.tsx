@@ -19,5 +19,5 @@ export default function Header(){
   if(error){window.alert('Ошибка выхода: '+error.message);return}
   setLoggedIn(false);router.replace('/login');router.refresh();
  }
- return <header><Link href="/" aria-label="Главная StandEL Time"><img src="/standel-logo.png" alt="StandEL"/></Link><strong>StandEL Time · онлайн</strong><nav><Link href="/">Главная</Link>{ready?(loggedIn?<button type="button" className="header-signout" disabled={busy} onClick={()=>void signOut()}>{busy?'Выход…':'Выход'}</button>:<Link href="/login">Вход</Link>):<span aria-hidden="true">···</span>}</nav></header>;
+ return <header><Link href="/" aria-label="Главная StandEL Time"><img src="/standel-logo.png" alt="StandEL"/></Link><strong>StandEL Time · онлайн</strong><nav><Link href="/">Главная</Link><Link href="/install">Установить</Link>{ready?(loggedIn?<button type="button" className="header-signout" disabled={busy} onClick={()=>void signOut()}>{busy?'Выход…':'Выход'}</button>:<Link href="/login">Вход</Link>):<span aria-hidden="true">···</span>}</nav></header>;
 }
