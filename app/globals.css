@@ -21,3 +21,19 @@
  table{font-size:13px}td,th{padding:7px}
 }
 @media(max-width:390px){.grid3{grid-template-columns:1fr}}
+
+/* v0.21: calm electric-work technical blueprint across all pages */
+body{background-color:#e7f0fb;background-image:linear-gradient(135deg,rgba(238,246,255,.92),rgba(230,242,254,.87)),repeating-linear-gradient(0deg,transparent 0 59px,rgba(10,83,158,.13) 60px 61px),repeating-linear-gradient(90deg,transparent 0 59px,rgba(10,83,158,.13) 60px 61px),radial-gradient(circle at 17% 22%,#6fb2ff 0,#d9ecff 48%,#eaf3fd 100%);background-attachment:fixed}
+body::before{content:"";position:fixed;z-index:-1;inset:0;opacity:.13;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='310' viewBox='0 0 460 310'%3E%3Cg fill='none' stroke='%230b5594' stroke-width='3' stroke-linejoin='round'%3E%3Cpath d='M0 64h64l28 28h70v60h54l22 22h120'/%3E%3Cpath d='M104 310v-68h70l23-23h71l21-21h171'/%3E%3Cpath d='M388 0v34h-70l-28 28v30'/%3E%3Ccircle cx='162' cy='92' r='8' fill='%230b5594'/%3E%3Ccircle cx='358' cy='174' r='8' fill='%230b5594'/%3E%3Ccircle cx='268' cy='219' r='7' fill='%230b5594'/%3E%3Cpath d='M225 36l-21 35h21l-10 34 39-47h-23l13-22z' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E");background-repeat:repeat;background-size:460px 310px;pointer-events:none}
+.panel{background:rgba(255,255,255,.96);backdrop-filter:blur(3px)}
+.header-signout{margin:0;background:#edf4fd;color:#173e67;padding:8px 14px;min-height:36px}
+header nav{align-items:center}header nav a{white-space:nowrap}
+.standel-modal-backdrop{position:fixed;z-index:1000;inset:0;background:rgba(8,27,49,.6);display:flex;align-items:center;justify-content:center;padding:18px}
+.standel-modal{background:#fff;border-radius:16px;box-shadow:0 24px 80px #081b3177;padding:22px;width:min(640px,100%);max-height:85vh;overflow-y:auto}
+.standel-modal-heading{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.standel-modal-heading h2{margin:0}.standel-modal-heading button{margin:0}
+@media(max-width:720px){.standel-modal{padding:14px}}
+
+/* Keep technical motif behind app content without hiding it under body background */
+body::before{z-index:0}
+header,main{position:relative;z-index:1}
