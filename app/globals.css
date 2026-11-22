@@ -5,3 +5,19 @@
 
 .calendargrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:15px 0}.calday{background:#eff5fc;color:#173854;text-align:left;margin:0;padding:9px;min-height:62px;border:1px solid #cfdeed}.calday small{display:block;font-size:10px}.calday.selected{background:#cde3ff;border:2px solid #2066bb}@media(max-width:650px){.calendargrid{gap:3px}.calday{padding:4px;min-height:48px}}
 .standel-avatar{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;vertical-align:middle;border-radius:50%;background:#d8e8f9;color:#174878;font-weight:700;overflow:hidden}.standel-avatar img{width:100%;height:100%;object-fit:cover}.avatar-editor{display:flex;align-items:center;gap:14px;max-width:600px}.avatar-editor input{margin-top:6px}.employee-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.worker-person{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+
+/* v0.19: мобильная доступность, горизонтальная прокрутка больших отчётов */
+.table-scroll{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+.navbuttons button{margin-top:0;min-height:42px}
+@media(max-width:720px){
+ main{margin:12px auto;padding:0 10px}.panel{padding:14px;margin:10px 0;border-radius:12px}
+ header{padding:12px 14px}header img{width:74px}
+ .navbuttons{gap:7px}.navbuttons button{flex:1 1 auto;padding:10px 12px}
+ .employee-tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:5px}
+ .employee-tabs button{white-space:nowrap;flex-shrink:0;scroll-snap-align:start;min-height:44px}
+ .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
+ input,select,textarea{font-size:16px;min-height:44px}
+ .calendargrid{gap:3px}.calday{min-width:0;word-break:break-word}
+ table{font-size:13px}td,th{padding:7px}
+}
+@media(max-width:390px){.grid3{grid-template-columns:1fr}}
