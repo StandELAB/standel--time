@@ -17,14 +17,14 @@ export async function GET(req:Request){
  try{
  const db=adminClient(),from=year+'-01-01',until=(Number(year)+1)+'-01-01';
  // Paginate all datasets and never return a partial successful result.
- async function collect<T>(fetchPage:(offset:number)=>PromiseLike<{data:T[]|null,error:unknown}>):Promise<T[]>{const rows:T[]=[];for(let offset=0;offset<250000;offset+=500){const {data,error}=await fetchPage(offset);if(error||!data)throw new Error('Database read failed');rows.push(...data);if(data.length<500)return rows;}throw new Error('Export limit exceeded');}
+ async function collect<T>(dataset:string,fetchPage:(offset:number)=>PromiseLike<{data:T[]|null,error:unknown}>):Promise<T[]>{const rows:T[]=[];for(let offset=0;offset<250000;offset+=500){const {data,error}=await fetchPage(offset);if(error||!data){const code=(error as {code?:unknown}|null)?.code;const safeCode=typeof code==='string'&&/^[A-Z0-9]{5,12}$/.test(code)?code:'UNKNOWN';throw new Error('CONNECT_READ:'+dataset+':'+safeCode);}rows.push(...data);if(data.length<500)return rows;}throw new Error('Export limit exceeded');}
  const [entries,staff,projects,payroll]=await Promise.all([
- collect(o=>db.from('time_entries').select('id,user_id,project_id,work_date,hours,category,updated_at').eq('org_id',org).is('deleted_at',null).gte('work_date',from).lt('work_date',until).order('id').range(o,o+499)),
- collect(o=>db.from('org_members').select('user_id,display_name,status').eq('org_id',org).order('user_id').range(o,o+499)),
- collect(o=>db.from('projects').select('id,name,project_code').eq('org_id',org).order('id').range(o,o+499)),
- collect(o=>db.from('payroll_months').select('user_id,month_start,status').eq('org_id',org).gte('month_start',from).lt('month_start',until).order('user_id').order('month_start').range(o,o+499))]);
+ collect('time_entries',o=>db.from('time_entries').select('id,user_id,project_id,work_date,hours,category,updated_at').eq('org_id',org).is('deleted_at',null).gte('work_date',from).lt('work_date',until).order('id').range(o,o+499)),
+ collect('org_members',o=>db.from('org_members').select('user_id,display_name,status').eq('org_id',org).order('user_id').range(o,o+499)),
+ collect('projects',o=>db.from('projects').select('id,name,project_code').eq('org_id',org).order('id').range(o,o+499)),
+ collect('payroll_months',o=>db.from('payroll_months').select('user_id,month_start,status').eq('org_id',org).gte('month_start',from).lt('month_start',until).order('user_id').order('month_start').range(o,o+499))]);
  const names=new Map(staff.map(x=>[x.user_id,x])),sites=new Map(projects.map(x=>[x.id,x])),locks=new Map(payroll.map(x=>[x.user_id+'|'+x.month_start,x.status]));
  const rows=entries.map(e=>({entry_id:e.id,employee_id:e.user_id,employee_name:names.get(e.user_id)?.display_name??'',project_id:e.project_id,project_name:sites.get(e.project_id)?.name??'',project_code:sites.get(e.project_id)?.project_code??'',work_date:e.work_date,hours:Number(e.hours),category:e.category,payroll_status:locks.get(e.user_id+'|'+e.work_date.slice(0,7)+'-01')??'open',updated_at:e.updated_at}));
  return reply({api_version:1,year:Number(year),exported_at:new Date().toISOString(),rows});
- }catch{return reply({error:'Export failed; retry without replacing existing data'},503);}
+ }catch(err){const message=err instanceof Error?err.message:'';const diagnostic=/^CONNECT_READ:(time_entries|org_members|projects|payroll_months):[A-Z0-9]{5,12}$/.test(message)?message:'CONNECT_INTERNAL';console.error('[StandEL Connect]',diagnostic);return reply({error:'Export failed; retry without replacing existing data',diagnostic},503);}
 }
