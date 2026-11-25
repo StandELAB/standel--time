@@ -65,3 +65,42 @@ header,main{position:relative;z-index:1}
 .hours-week-day span,.hours-week-day small{font-size:12px}
 .hours-day-detail{margin-top:15px;padding:14px;background:#f5f9ff;border:1px solid #d8e5f1;border-radius:10px}
 @media(max-width:650px){.hours-week-grid{gap:3px}.hours-week-day{padding:8px 2px;gap:5px;font-size:12px}.hours-week-day span,.hours-week-day small{font-size:10px}}
+
+/* v0.35: compact admin navigation and interactive overview cards */
+.admin-section-menu{max-width:760px;margin:14px 0 20px}
+.admin-section-menu select{font-weight:700;color:#173854;background:#fff;border:1px solid #a9c1dd;border-radius:14px;min-height:58px;box-shadow:0 3px 12px #173e6712;cursor:pointer;font-size:17px;padding:12px 18px}
+.admin-home-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:16px 0 24px}
+.admin-home-card{display:flex;align-items:center;gap:12px;margin:0;min-width:0;min-height:132px;padding:20px;text-align:left;background:#fff;color:#182b40;border:1px solid #d9e6f4;border-radius:18px;box-shadow:0 5px 20px #173e6710;transition:transform .15s,box-shadow .15s}
+.admin-home-card:hover{transform:translateY(-2px);box-shadow:0 8px 26px #173e671c}
+.admin-home-card:focus-visible,.admin-section-menu select:focus-visible{outline:3px solid #1769cb;outline-offset:2px}
+.admin-card-icon{display:grid;place-items:center;width:54px;height:54px;flex-shrink:0;background:#e7f2ff;color:#1662ba;border-radius:13px;font-size:32px}
+.admin-card-copy{display:flex;flex-direction:column;gap:8px;min-width:0;font-size:16px;font-weight:400}
+.admin-card-copy strong{font-size:26px;line-height:1.1}
+.admin-card-arrow{font-size:27px;color:#1c507e;margin-left:auto}
+header nav .header-signout{margin-left:auto;flex-shrink:0}
+@media(max-width:720px){.admin-home-cards{grid-template-columns:1fr 1fr;gap:12px}.admin-home-card{min-height:108px;padding:13px;gap:9px}.admin-card-icon{width:44px;height:44px;font-size:25px}.admin-card-copy{font-size:14px}.admin-card-copy strong{font-size:24px}.admin-card-arrow{font-size:24px}header nav{gap:12px;margin-left:0;width:100%;display:flex;align-items:center}header nav .header-signout{margin-left:auto}}
+@media(max-width:420px){.admin-home-card{padding:11px;gap:7px}.admin-card-icon{width:37px;height:37px;font-size:23px}.admin-card-copy{font-size:13px}.admin-card-copy strong{font-size:21px}.admin-card-arrow{font-size:20px}header nav{gap:10px}}
+
+/* v0.36: educational rotating electrician formula card */
+.electric-formula{position:relative;overflow:hidden;margin:16px 0 22px;padding:20px 22px 14px;border-radius:22px;color:#f4f8ff;background:linear-gradient(125deg,#071e37 0%,#073256 63%,#06476d 100%);box-shadow:0 12px 27px rgba(8,31,59,.17);border:1px solid rgba(133,200,246,.25)}
+.electric-formula::before{content:"";position:absolute;right:-90px;top:-70px;width:350px;height:280px;opacity:.14;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 27px,#7ad0ff 28px 29px,transparent 30px 49px);transform:rotate(26deg)}
+.electric-formula-head,.electric-formula-body,.electric-formula-foot{position:relative;z-index:1}
+.electric-formula-head{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.electric-formula-title{display:flex;align-items:center;gap:10px}
+.electric-formula-title>span{font-size:27px}
+.electric-formula h2{color:#fff;font-size:clamp(18px,2.5vw,24px);margin:0}
+.electric-formula-refresh{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:11px;padding:9px 12px;white-space:nowrap}
+.electric-formula-refresh:hover{background:rgba(255,255,255,.22)}
+.electric-formula-body{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:22px;margin-top:18px}
+.electric-formula-main{min-width:0}
+.electric-formula-equation{display:inline-block;max-width:100%;font-size:clamp(27px,4.6vw,43px);font-weight:800;color:white;letter-spacing:.01em;padding:9px 16px;margin-bottom:13px;border-radius:16px;border:2px solid #ffc629;background:rgba(8,18,35,.5);box-shadow:0 0 15px rgba(255,206,63,.28);overflow-wrap:anywhere}
+.electric-formula strong{color:#fff;font-size:17px}
+.electric-formula p{color:#e3f1fc;margin:8px 0 12px}
+.electric-formula ul{list-style:none;padding:0;margin:8px 0 0;color:#e0edf8}
+.electric-formula li{padding:2px 0;line-height:1.45}
+.electric-formula-example{border-left:1px solid rgba(255,255,255,.35);padding:10px 0 6px 22px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.electric-formula-marker{display:inline-block;align-self:flex-start;padding:6px 12px;border-radius:8px;background:#ffd331;color:#0a2844;font-weight:800}
+.electric-formula-example p{font-size:clamp(17px,2.2vw,23px);font-weight:700;line-height:1.5;overflow-wrap:anywhere}
+.electric-formula-example small{color:#c9dded;line-height:1.5}
+.electric-formula-foot{margin-top:15px;display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#bcd5ea}
+@media(max-width:650px){.electric-formula{padding:15px;border-radius:16px}.electric-formula-body{grid-template-columns:1fr;gap:10px}.electric-formula-example{border-left:0;border-top:1px solid rgba(255,255,255,.35);padding:16px 0 3px}.electric-formula-refresh span{display:none}.electric-formula-refresh{font-size:23px;padding:5px 12px}.electric-formula-foot{font-size:11px}.electric-formula-equation{font-size:clamp(24px,7vw,34px)}}
