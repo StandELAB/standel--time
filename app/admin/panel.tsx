@@ -223,7 +223,7 @@ export default function AdminClient({orgId,adminUserId,operations,initial}:Props
  async function unassignOrderEmployee(o:Order,userId:string){if(!confirm('Убрать сотрудника из задания?'))return;const db=browserClient();const {error}=await db.from('work_order_assignees').delete().eq('work_order_id',o.id).eq('user_id',userId);if(error)setMsg(error.message);else setOrderAssignees(old=>old.filter(a=>!(a.work_order_id===o.id&&a.user_id===userId)))}
  function exportCsv(){const header=['Дата','Работник','Объект','Arbetsorder','Начало','Окончание','Перерыв','Часы','Категория','Описание'];const rows=filtered.map(e=>[e.work_date,name(e.user_id),site(e.project_id)?.name||'',orders.find(o=>o.id===e.work_order_id)?.order_no||'',asClock(e.start_minute),asClock(e.end_minute),e.break_minutes,Number(e.hours),e.category,e.description]);exportXlsx('StandEL_'+from+'_'+to,header,rows)}
 
- return <><h1>StandEL Time</h1>
+ return <><h1>StandEL Time</h1><p><a href="/admin/connect">Интеграция с Excel</a></p>
  <div className="admin-section-menu">
   <select aria-label="Выберите раздел" value={tab} onChange={e=>{setTab(e.target.value as typeof tab);setMsg('')}}>
    <option value="overview">Главная</option>
