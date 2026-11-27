@@ -1,0 +1,7 @@
+import {NextResponse} from 'next/server';
+import {serverClient} from '../../../../lib/supabase/server';
+import {candidatesForDay,previousStockholmDay,sendReminder,type Channel} from '../../../../lib/reminders/core';
+export const runtime='nodejs';
+async function context(){const db=await serverClient();const {data:{user}}=await db.auth.getUser();if(!user)return null;const {data:member}=await db.from('org_members').select('org_id').eq('user_id',user.id).eq('status','active').eq('role','admin').maybeSingle();return member?.org_id||null;}
+export async function GET(req:Request){const org=await context();if(!org)return NextResponse.json({error:'Forbidden'},{status:403});const day=new URL(req.url).searchParams.get('day')||previousStockholmDay();try{return NextResponse.json({day,candidates:await candidatesForDay(org,day)});}catch{return NextResponse.json({error:'Cannot retrieve candidate list'},{status:400});}}
+export async function POST(req:Request){const org=await context();if(!org)return NextResponse.json({error:'Forbidden'},{status:403});try{const body=await req.json();const day=String(body.day||'');const userId=String(body.userId||'');const channel=body.channel as Channel;if(!/^[0-9a-f-]{36}$/.test(userId))return NextResponse.json({error:'Invalid user'},{status:400});const result=await sendReminder(org,userId,day,channel);return NextResponse.json(result,{status:result.ok?200:409});}catch{return NextResponse.json({error:'Could not send reminder'},{status:400});}}
